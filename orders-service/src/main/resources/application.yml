@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: orders_service
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/orders_db
+    username: ordersys_user
+    password: ofirnah
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+message: default profile from orders service
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+message: development profile from orders service
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+message: test profile from orders service
