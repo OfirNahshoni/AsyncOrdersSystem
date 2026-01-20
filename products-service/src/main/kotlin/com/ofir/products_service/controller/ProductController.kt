@@ -6,6 +6,7 @@ import com.ofir.products_service.dto.UpdateProductRequest
 import com.ofir.products_service.service.ProductService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/v1/products")
@@ -36,7 +38,13 @@ class ProductController(
 
     @PutMapping("/{productMkt}")
     fun updateProduct(
-        @RequestBody productRequest: UpdateProductRequest,
-        @PathVariable("productMkt") productMkt: String
+        @RequestBody @Valid productRequest: UpdateProductRequest,
+        @PathVariable("productMkt") productMkt: UUID
     ) = productService.updateProduct(productRequest, productMkt)
+
+    @DeleteMapping("/{productMkt}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteProduct(@PathVariable("productMkt") productMkt: UUID) {
+        productService.deleteProduct(productMkt)
+    }
 }

@@ -3,9 +3,12 @@ package com.ofir.products_service.controller
 import com.ninjasquad.springmockk.MockkBean
 import com.ofir.products_service.dto.CreateProductRequest
 import com.ofir.products_service.dto.ProductResponse
+import com.ofir.products_service.dto.UpdateProductRequest
 import com.ofir.products_service.service.ProductService
 import com.ofir.products_service.util.productResponseList
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
@@ -21,7 +24,7 @@ class ProductControllerUnitTest {
     @Autowired
     lateinit var mockMvc: MockMvc
     @MockkBean
-    lateinit var productService: ProductService
+    lateinit var productServiceMockk: ProductService
 
     private fun Any.toJson(): String {
         val objectMapper = ObjectMapper()
@@ -59,7 +62,7 @@ class ProductControllerUnitTest {
             quantity = 3
         )
 
-        every { productService.addProduct(any()) } returns expectedResponse
+        every { productServiceMockk.addProduct(any()) } returns expectedResponse
 
         mockMvc.perform(
             MockMvcRequestBuilders.post("/v1/products")
@@ -78,11 +81,54 @@ class ProductControllerUnitTest {
     fun retrieveAllProducts() {
         val expectedResponse = productResponseList()
 
-        every { productService.retrieveAllProducts(any()) } returns expectedResponse
+        every { productServiceMockk.retrieveAllProducts(any()) } returns expectedResponse
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/products"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(6))
             .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Car B"))
+    }
+
+    // PUT /products/{productMkt}
+    @Test
+    fun updateProduct() {
+        val updateRequest = UpdateProductRequest(
+            name = "New Product Name",
+            price = 10,
+            quantity = 5
+        )
+
+        val expectedResponse = ProductResponse(
+            id = 1,
+            createdAt = TEST_TIME,
+            name = updateRequest.name!!,
+            price = updateRequest.price!!,
+            numInStock = updateRequest.quantity!!,
+            mkt = TEST_UUID
+        )
+
+        every { productServiceMockk.updateProduct(any(), any()) } returns expectedResponse
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .put("/v1/products/{productMkt}", expectedResponse.mkt)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updateRequest.toJson())
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("New Product Name"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.numInStock").value(5))
+    }
+
+    // DELETE /products/{productMkt}
+    @Test
+    fun deleteProduct() {
+        every { productServiceMockk.deleteProduct(any()) } just runs
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.delete("/v1/products/{productMkt}", TEST_UUID)
+        )
+            .andExpect(MockMvcResultMatchers.status().isNoContent)
     }
 }

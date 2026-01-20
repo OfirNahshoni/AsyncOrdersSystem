@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProductRepository: JpaRepository<Product, Int> {
     fun findByNameContaining(name: String): List<Product>
+    fun findByMkt(mkt: String): Product?
 }

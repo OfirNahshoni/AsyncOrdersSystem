@@ -5,7 +5,9 @@ import com.ofir.products_service.dto.ProductResponse
 import com.ofir.products_service.dto.UpdateProductRequest
 import com.ofir.products_service.entity.Product
 import com.ofir.products_service.repository.ProductRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class ProductService(
@@ -25,6 +27,8 @@ class ProductService(
 
         // save product to db
         val savedProduct = productRepository.save(productToSave)
+
+        // TODO: publish to kafka a NewProductEvent
 
         return ProductResponse(
             id = savedProduct.id!!,
@@ -53,7 +57,34 @@ class ProductService(
         }
     }
 
-    fun updateProduct(productRequest: UpdateProductRequest, productMkt: String): ProductResponse {
+    fun updateProduct(productRequest: UpdateProductRequest, productMkt: UUID): ProductResponse {
+        val originalProduct = productRepository.findByMkt(productMkt.toString())
+            ?: throw NoSuchElementException("Product with mkt $productMkt NOT found !")
 
+        // update fields
+        productRequest.name?.let { originalProduct.name = it }
+        productRequest.price?.let { originalProduct.price = it }
+        productRequest.quantity?.let { originalProduct.numInStock = it }
+
+        // save to db
+        val updatedProduct = productRepository.save(originalProduct)
+
+        // TODO: publish to kafka a UpdatedProduct
+
+        return ProductResponse(
+            id = updatedProduct.id!!,
+            createdAt = updatedProduct.createdAt,
+            name = updatedProduct.name,
+            price = updatedProduct.price,
+            numInStock = updatedProduct.numInStock,
+            mkt = updatedProduct.mkt
+        )
+    }
+
+    fun deleteProduct(productMkt: UUID) {
+        val productToDelete = productRepository.findByMkt(productMkt.toString())
+            ?: throw NoSuchElementException("product with mkt $productMkt NOT found !")
+
+        productRepository.delete(productToDelete)
     }
 }

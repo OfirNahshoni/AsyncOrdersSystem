@@ -2,7 +2,10 @@ package com.ofir.products_service.controller
 
 import com.ofir.products_service.dto.CreateProductRequest
 import com.ofir.products_service.dto.ProductResponse
+import com.ofir.products_service.dto.UpdateProductRequest
+import com.ofir.products_service.entity.Product
 import com.ofir.products_service.repository.ProductRepository
+import com.ofir.products_service.util.TEST_UUID
 import com.ofir.products_service.util.productEntityList
 import com.ofir.products_service.util.productResponseList
 import org.junit.jupiter.api.Assertions
@@ -97,5 +100,37 @@ class ProductControllerIntgTest {
     }
 
     // update product
+    @Test
+    fun updateProduct() {
+        val updateRequest = UpdateProductRequest(
+            name = "Super Car Z",
+            price = 200,
+            quantity = 3
+        )
 
+        val updatedProduct = webTestClient.put()
+            .uri("/v1/products/{productMkt}", TEST_UUID)
+            .bodyValue(updateRequest)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(ProductResponse::class.java)
+            .returnResult()
+            .responseBody
+
+        println("updated product : $updatedProduct")
+
+        Assertions.assertEquals("Super Car Z", updatedProduct!!.name)
+        Assertions.assertEquals(200, updatedProduct.price)
+        Assertions.assertEquals(3, updatedProduct.numInStock)
+    }
+
+    // delete product
+    fun deleteProduct() {
+        webTestClient.delete()
+            .uri("/v1/products/{productMkt}", TEST_UUID)
+            .exchange()
+            .expectStatus().isNoContent
+
+        println("course with mkt $TEST_UUID was deleted")
+    }
 }

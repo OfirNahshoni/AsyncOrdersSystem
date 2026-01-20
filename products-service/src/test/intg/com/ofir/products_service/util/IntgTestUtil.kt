@@ -3,13 +3,16 @@ package com.ofir.products_service.util
 import com.ofir.products_service.dto.ProductResponse
 import com.ofir.products_service.entity.Product
 
+val TEST_UUID = "550e8400-e29b-41d4-a716-446655440000"
+
 fun productEntityList() = listOf(
     Product(
         null,
         null,
         "Car A",
         10,
-        1
+        1,
+        TEST_UUID
     ),
     Product(
         null,
