@@ -1,21 +1,18 @@
-package com.ofir.orders_service.entity
+package com.ofir.products_service.entity
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity
-@Table(name = "Orders")
-data class Order(
+@Table(name = "Products")
+data class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
@@ -24,16 +21,10 @@ data class Order(
     @Column(updatable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now(),
 
-    @Enumerated(EnumType.STRING)
-    var status: OrderStatus = OrderStatus.PENDING,
+    var name: String,
     var price: Int,
+    var numInStock: Int = 0,
 
-    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val items: MutableList<OrderItem> = mutableListOf()
+    @Column(unique = true, nullable = false, updatable = false)
+    val mkt: String = UUID.randomUUID().toString()
 )
-
-enum class OrderStatus {
-    PENDING,
-    CONFIRMED,
-    REJECTED
-}

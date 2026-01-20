@@ -15,6 +15,7 @@ data class CreateOrderRequest(
 data class OrderItemRequest(
     @field:Positive(message = "productId must be positive")
     val productId: Int,
+
     @field:Min(value = 1, message = "quantity must be at least 1")
     @field:Max(value = 100, message = "quantity must be at most 100")
     val quantity: Int = 1

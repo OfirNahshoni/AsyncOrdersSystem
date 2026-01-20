@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: orders_postgres
+    environment:
+      POSTGRES_USER: ordersys_user
+      POSTGRES_PASSWORD: ofirnah
+      POSTGRES_DB: orders_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - orders_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  orders_postgres_data:

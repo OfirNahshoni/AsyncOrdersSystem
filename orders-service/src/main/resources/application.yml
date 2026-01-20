@@ -3,7 +3,7 @@ spring:
     name: orders_service
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/orders_db
+    url: jdbc:postgresql://localhost:5434/orders_db
     username: ordersys_user
     password: ofirnah
   jpa:
