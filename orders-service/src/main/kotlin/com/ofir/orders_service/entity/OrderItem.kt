@@ -20,6 +20,6 @@ data class OrderItem(
     var order: Order? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    var product: Product? = null,
+    var product: Product,
     var quantity: Int = 1
 )

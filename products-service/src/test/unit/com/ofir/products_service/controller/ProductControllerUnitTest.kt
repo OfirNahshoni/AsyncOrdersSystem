@@ -65,7 +65,7 @@ class ProductControllerUnitTest {
         every { productServiceMockk.addProduct(any()) } returns expectedResponse
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/v1/products")
+            MockMvcRequestBuilders.post("/api/v1/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request.toJson())
         )
@@ -83,7 +83,7 @@ class ProductControllerUnitTest {
 
         every { productServiceMockk.retrieveAllProducts(any()) } returns expectedResponse
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/products"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(6))
             .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Car B"))
@@ -111,7 +111,7 @@ class ProductControllerUnitTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .put("/v1/products/{productMkt}", expectedResponse.mkt)
+                .put("/api/v1/products/{productMkt}", expectedResponse.mkt)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updateRequest.toJson())
         )
@@ -127,7 +127,7 @@ class ProductControllerUnitTest {
         every { productServiceMockk.deleteProduct(any()) } just runs
 
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/v1/products/{productMkt}", TEST_UUID)
+            MockMvcRequestBuilders.delete("/api/v1/products/{productMkt}", TEST_UUID)
         )
             .andExpect(MockMvcResultMatchers.status().isNoContent)
     }

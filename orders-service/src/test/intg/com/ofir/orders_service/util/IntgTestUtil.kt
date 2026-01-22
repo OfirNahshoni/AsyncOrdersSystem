@@ -54,17 +54,17 @@ fun orderEntityList(products: List<Product>): List<Order> {
 
     order1.items.addAll(listOf(
         OrderItem(null, order1, products[0], 1),
-        OrderItem(null, order1, products[0], 2)
+        OrderItem(null, order1, products[1], 2)
     ))
 
     order2.items.addAll(listOf(
         OrderItem(null, order2, products[1], 2),
-        OrderItem(null, order2, products[1], 3)
+        OrderItem(null, order2, products[2], 3)
     ))
 
     order3.items.addAll(listOf(
         OrderItem(null, order3, products[2], 4),
-        OrderItem(null, order3, products[2], 2)
+        OrderItem(null, order3, products[3], 2)
     ))
 
     return listOf(order1, order2, order3)

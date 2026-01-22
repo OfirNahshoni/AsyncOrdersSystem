@@ -61,7 +61,7 @@ class OrderControllerIntgTest {
         val orderRequest = mockOrderRequest()
 
         val savedOrder = webTestClient.post()
-            .uri("/v1/orders")
+            .uri("/api/v1/orders")
             .bodyValue(orderRequest)
             .exchange()
             .expectStatus().isCreated
@@ -71,6 +71,8 @@ class OrderControllerIntgTest {
 
         println("saved order : $savedOrder")
 
+        // TODO: assert that OrderItems were saved (3 lines)
+
         Assertions.assertEquals(4, savedOrder!!.id)
         Assertions.assertEquals(OrderStatus.PENDING, savedOrder.status)
         Assertions.assertEquals(71, savedOrder.totalPrice)
@@ -79,7 +81,7 @@ class OrderControllerIntgTest {
     @Test
     fun retrieveAllOrders() {
         val orderResponse = webTestClient.get()
-            .uri("/v1/orders")
+            .uri("/api/v1/orders")
             .exchange()
             .expectStatus().isOk
             .expectBodyList(OrderResponse::class.java)

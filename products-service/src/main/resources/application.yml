@@ -17,6 +17,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+
 message: default profile from products service
 
 ---
@@ -24,6 +25,7 @@ spring:
   config:
     activate:
       on-profile: dev
+
 message: development profile from products service
 
 ---
@@ -31,4 +33,5 @@ spring:
   config:
     activate:
       on-profile: test
+
 message: test profile from products service

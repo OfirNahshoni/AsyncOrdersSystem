@@ -15,15 +15,13 @@ class ProductService(
 ) {
     fun addProduct(productRequest: CreateProductRequest): ProductResponse {
         // cast from dto (request) to jpa (entity)
-        val productToSave = productRequest.let {
-            Product(
-                null,
-                null,
-                it.name,
-                it.price,
-                it.quantity!!
-            )
-        }
+        val productToSave = Product(
+            null,
+            null,
+            productRequest.name,
+            productRequest.price,
+            productRequest.quantity!!
+        )
 
         // save product to db
         val savedProduct = productRepository.save(productToSave)

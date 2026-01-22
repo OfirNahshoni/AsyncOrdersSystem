@@ -47,7 +47,7 @@ class ProductControllerIntgTest {
         val request = CreateProductRequest("A", 11, 4)
 
         val savedProduct = webTestClient.post()
-            .uri("/v1/products")
+            .uri("/api/v1/products")
             .bodyValue(request)
             .exchange()
             .expectStatus().isCreated
@@ -66,7 +66,7 @@ class ProductControllerIntgTest {
     @Test
     fun retrieveAllProducts() {
         val products = webTestClient.get()
-            .uri("/v1/products")
+            .uri("/api/v1/products")
             .exchange()
             .expectStatus().isOk
             .expectBodyList(ProductResponse::class.java)
@@ -82,7 +82,7 @@ class ProductControllerIntgTest {
     // get all products containing product_name
     @Test
     fun retrieveAllProducts_ByNameContaining() {
-        val uri = UriComponentsBuilder.fromUriString("/v1/products")
+        val uri = UriComponentsBuilder.fromUriString("/api/v1/products")
             .queryParam("product_name", "Cabel")
             .toUriString()
 
@@ -109,7 +109,7 @@ class ProductControllerIntgTest {
         )
 
         val updatedProduct = webTestClient.put()
-            .uri("/v1/products/{productMkt}", TEST_UUID)
+            .uri("/api/v1/products/{productMkt}", TEST_UUID)
             .bodyValue(updateRequest)
             .exchange()
             .expectStatus().isOk
@@ -127,7 +127,7 @@ class ProductControllerIntgTest {
     // delete product
     fun deleteProduct() {
         webTestClient.delete()
-            .uri("/v1/products/{productMkt}", TEST_UUID)
+            .uri("/api/v1/products/{productMkt}", TEST_UUID)
             .exchange()
             .expectStatus().isNoContent
 

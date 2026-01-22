@@ -55,7 +55,7 @@ class OrderControllerUnitTest {
         every { orderServiceMock.addOrder(any()) } returns expectedResponse
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/v1/orders")
+            MockMvcRequestBuilders.post("/api/v1/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request.toJson())
         )
@@ -70,7 +70,7 @@ class OrderControllerUnitTest {
 
         every { orderServiceMock.retrieveAllOrders() } returns expectedOrders
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/orders"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/orders"))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].totalPrice").value(120))

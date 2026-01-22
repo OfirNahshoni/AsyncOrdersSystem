@@ -6,6 +6,7 @@ import com.ofir.products_service.dto.UpdateProductRequest
 import com.ofir.products_service.service.ProductService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/v1/products")
+@RequestMapping("/api/v1/products")
+@Validated
 class ProductController(
     val productService: ProductService
 ) {
@@ -27,9 +29,7 @@ class ProductController(
     @ResponseStatus(HttpStatus.CREATED)
     fun addProduct(
         @RequestBody @Valid productRequest: CreateProductRequest
-    ): ProductResponse {
-        return productService.addProduct(productRequest)
-    }
+    ): ProductResponse = productService.addProduct(productRequest)
 
     @GetMapping
     fun retrieveAllProducts(

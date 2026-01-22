@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: notifications_postgres
+    environment:
+      POSTGRES_USER: ordersys_user
+      POSTGRES_PASSWORD: ofirnah
+      POSTGRES_DB: notifications_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - notifications_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  notifications_postgres_data:

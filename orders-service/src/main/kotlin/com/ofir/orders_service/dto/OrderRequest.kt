@@ -13,6 +13,7 @@ data class CreateOrderRequest(
 )
 
 data class OrderItemRequest(
+    // TODO: mkt UUID
     @field:Positive(message = "productId must be positive")
     val productId: Int,
 

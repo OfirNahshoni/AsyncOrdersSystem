@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: notifications_service
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5436/notifications_db
+    username: ordersys_user
+    password: ofirnah
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notifications-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: orderStatusChanged:com.ofir.notifications_service.dto.OrderStatusChangedEvent
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    default-encoding: UTF-8
+
+message: default profile from notifications service
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+message: dev profile from notifications service
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  # kafka for tests
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+
+  # mocks sending mail
+  mail:
+    host: localhost
+    port: 3025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+message: test profile from notifications service
