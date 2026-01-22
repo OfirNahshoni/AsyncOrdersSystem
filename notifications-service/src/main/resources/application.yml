@@ -75,6 +75,8 @@ spring:
   mail:
     host: localhost
     port: 3025
+    username: test@test.com
+    password: testpassword
     properties:
       mail:
         smtp:

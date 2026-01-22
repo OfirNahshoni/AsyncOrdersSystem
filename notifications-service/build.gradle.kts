@@ -38,6 +38,8 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     testImplementation("org.springframework.boot:spring-boot-starter-kafka-test")
 
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
     // email
     implementation("org.springframework.boot:spring-boot-starter-mail")
 
