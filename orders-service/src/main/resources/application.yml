@@ -1,11 +1,13 @@
 spring:
   application:
     name: orders_service
+
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5434/orders_db
     username: ordersys_user
     password: ofirnah
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
@@ -17,13 +19,39 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.type.mapping: orderCreatedEvent:com.ofir.orders_service.dto.OrderCreatedEvent
+    consumer:
+      group-id: orders-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.type.mapping: orderStatusChangedEvent:com.ofir.orders_service.dto.OrderStatusChangedEvent
+        spring.json.trusted.packages: "*"
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+
 message: default profile from orders service
+
+---
+kafka:
+  topics:
+    order-created: order-created
+    order-status-changed: order-status-changed
 
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
 message: development profile from orders service
 
 ---
@@ -31,4 +59,9 @@ spring:
   config:
     activate:
       on-profile: test
+
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+
 message: test profile from orders service

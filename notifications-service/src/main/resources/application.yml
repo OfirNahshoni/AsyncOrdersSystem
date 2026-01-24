@@ -53,6 +53,12 @@ spring:
 message: default profile from notifications service
 
 ---
+kafka:
+  topics:
+    order-created: order-created
+    order-status-changed: order-status-changed
+
+---
 spring:
   config:
     activate:

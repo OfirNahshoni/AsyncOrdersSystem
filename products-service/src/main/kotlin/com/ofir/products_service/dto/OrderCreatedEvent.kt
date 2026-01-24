@@ -1,4 +1,4 @@
-package com.ofir.orders_service.dto
+package com.ofir.products_service.dto
 
 data class OrderCreatedEvent(
     val orderId: Int,

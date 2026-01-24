@@ -1,6 +1,6 @@
 package com.ofir.notifications_service.service
 
-import com.ofir.notifications_service.common.logger
+import com.ofir.notifications_service.logging.logger
 import com.ofir.notifications_service.dto.OrderStatusChangedEvent
 import com.ofir.notifications_service.entity.Contact
 import com.ofir.notifications_service.entity.MessageObj

@@ -1,6 +1,6 @@
 package com.ofir.notifications_service.consumer
 
-import com.ofir.notifications_service.common.logger
+import com.ofir.notifications_service.logging.logger
 import com.ofir.notifications_service.dto.OrderStatusChangedEvent
 import com.ofir.notifications_service.service.NotificationService
 import jakarta.validation.Validator
@@ -14,8 +14,8 @@ class OrderEventConsumer(
 ) {
     // listens to topic 'order-status-changed'
     @KafkaListener(
-        topics = ["order-status-changed"],
-        groupId = "notifications-service-group"
+        topics = ["\${kafka.topics.order-status-changed}"],
+        groupId = "\${spring.kafka.consumer.group-id}"
     )
     fun consumeOrderStatusChange(event: OrderStatusChangedEvent) {
         logger.info("received order status change event : orderId=${event.orderId} , newStatus=${event.newStatus}")

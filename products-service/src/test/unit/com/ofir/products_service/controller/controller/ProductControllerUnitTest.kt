@@ -1,6 +1,7 @@
-package com.ofir.products_service.controller
+package com.ofir.products_service.controller.controller
 
 import com.ninjasquad.springmockk.MockkBean
+import com.ofir.products_service.controller.ProductController
 import com.ofir.products_service.dto.CreateProductRequest
 import com.ofir.products_service.dto.ProductResponse
 import com.ofir.products_service.dto.UpdateProductRequest
