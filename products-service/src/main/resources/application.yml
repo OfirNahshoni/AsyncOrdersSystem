@@ -26,13 +26,13 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       properties:
-        spring.json.type.mapping: orderCreatedEvent:com.ofir.orders_service.dto.OrderCreatedEvent
+        spring.json.type.mapping: orderStatusChangedEvent:com.ofir.products_service.dto.OrderStatusChangedEvent
     consumer:
       group-id: products-service-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       properties:
-        spring.json.type.mapping: orderStatusChangedEvent:com.ofir.orders_service.dto.OrderStatusChangedEvent
+        spring.json.type.mapping: orderCreatedEvent:com.ofir.products_service.dto.OrderCreatedEvent
         spring.json.trusted.packages: "*"
     admin:
       properties:

@@ -17,8 +17,8 @@ class OrderCreatedConsumer(
     private val orderStatusProducer: OrderStatusProducer
 ) {
     @KafkaListener(
-        topics = ["\${kafka.topics.order-created}"],
-        groupId = "\${spring.kafka.consumer.group-id}"
+        topics = ["order-created"],
+        groupId = "products-service-group"
     )
     @Transactional
     fun consumeOrderCreated(event: OrderCreatedEvent) {
@@ -39,14 +39,14 @@ class OrderCreatedConsumer(
                         )
                     }
                     product.numInStock < itemEvent.quantity -> {
-                        logger.error("insufficient stock for product ${product.id}. Available: ${product.numInStock}, Requested: ${itemEvent.quantity}")
+                        logger.error("insufficient stock for product ${product.name}. Available: ${product.numInStock}, Requested: ${itemEvent.quantity}")
                         ValidationResult(
                             isValid = false,
-                            message = "insufficient stock for product ${product.name} (available: ${product.numInStock}, requested: ${itemEvent.quantity})"
+                            message = "insufficient stock for product ${product.name} (Available: ${product.numInStock}, Requested: ${itemEvent.quantity})"
                         )
                     }
                     else -> {
-                        ValidationResult(isValid = false, message = null)
+                        ValidationResult(isValid = true, message = null)
                     }
                 }
             }

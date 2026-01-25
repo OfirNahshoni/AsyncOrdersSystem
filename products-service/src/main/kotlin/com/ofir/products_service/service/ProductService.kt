@@ -26,7 +26,7 @@ class ProductService(
         // save product to db
         val savedProduct = productRepository.save(productToSave)
 
-        // TODO: publish to kafka a NewProductEvent
+        // TODO: publish to kafka topic 'product-created'
 
         return ProductResponse(
             id = savedProduct.id!!,
@@ -67,7 +67,7 @@ class ProductService(
         // save to db
         val updatedProduct = productRepository.save(originalProduct)
 
-        // TODO: publish to kafka a UpdatedProduct
+        // TODO: publish to kafka topic 'product-updated'
 
         return ProductResponse(
             id = updatedProduct.id!!,
@@ -84,5 +84,7 @@ class ProductService(
             ?: throw NoSuchElementException("product with mkt $productMkt NOT found !")
 
         productRepository.delete(productToDelete)
+
+        // TODO: publish to kafka topic 'product-deleted'
     }
 }

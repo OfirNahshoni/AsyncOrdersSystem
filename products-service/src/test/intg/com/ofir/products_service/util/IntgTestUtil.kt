@@ -100,3 +100,20 @@ fun productResponseList() = listOf(
         "550e8400-e29b-41d4-a716-446655440023"
     )
 )
+
+fun createProductForIntegrationTest(
+    name: String,
+    price: Int,
+    numInStock: Int
+) = Product(
+    name = name,
+    price = price,
+    numInStock = numInStock
+)
+
+fun createProductsListForIntegrationTest(): List<Product> = listOf(
+    createProductForIntegrationTest(name = "Laptop", price = 1500, numInStock = 10),
+    createProductForIntegrationTest(name = "Mouse", price = 25, numInStock = 50),
+    createProductForIntegrationTest(name = "Keyboard", price = 75, numInStock = 30),
+    createProductForIntegrationTest(name = "Monitor", price = 300, numInStock = 15)
+)

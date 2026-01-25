@@ -3,13 +3,13 @@ package com.ofir.orders_service.consumer
 import com.ninjasquad.springmockk.MockkBean
 import com.ofir.orders_service.dto.OrderStatusChangedEvent
 import com.ofir.orders_service.entity.OrderStatus
-import com.ofir.orders_service.entity.Product
 import com.ofir.orders_service.producer.OrderEventProducer
 import com.ofir.orders_service.repository.OrderItemRepository
 import com.ofir.orders_service.repository.OrderRepository
 import com.ofir.orders_service.repository.ProductRepository
 import com.ofir.orders_service.util.orderEntityList
 import com.ofir.orders_service.util.productEntityMockList
+import io.mockk.justRun
 import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,7 +40,7 @@ import kotlin.test.assertFalse
 @ActiveProfiles("test")
 @EmbeddedKafka(
     partitions = 1,
-    topics = ["\${kafka.topics.order-status-changed}"]
+    topics = ["order-status-changed"]
 )
 class OrderStatusChangedConsumerIntgTest {
     @Autowired
@@ -61,6 +61,8 @@ class OrderStatusChangedConsumerIntgTest {
         orderItemRepository.deleteAll()
         orderRepository.deleteAll()
         productRepository.deleteAll()
+
+        justRun { orderEventProducer.publishOrderCreatedEvent(any()) }
     }
 
     @Test
